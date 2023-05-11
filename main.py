@@ -52,7 +52,7 @@ def read_and_textify(file):
     return text_list
 
 def split_docs(documents,chunk_size=3000,chunk_overlap=100):
-#   text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+  text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
 #   docs = text_splitter.split_documents(documents)
   docs = text_splitter.create_documents(documents)
   return docs
