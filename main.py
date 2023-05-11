@@ -49,6 +49,7 @@ def read_and_textify(file):
     # closing the pdf file object
     file.close()
     st.write(text_list)
+    return text_list
 
 
 
