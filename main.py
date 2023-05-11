@@ -101,7 +101,7 @@ elif uploaded_file:
     st.write(len(docs))
     
     #extract embeddings
-    embeddings = OpenAIEmbeddings(openai_api_key=os.environ['OPENAI_API_KEY'])
+    embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
     
     
     pinecone.init(
