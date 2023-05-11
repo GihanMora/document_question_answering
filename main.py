@@ -9,7 +9,7 @@ import numpy as np
 import re
 from dateutil.parser import parse
 import traceback
-
+from langchain.document_loaders import DirectoryLoader
 import PyPDF2
 from streamlit_chat import message
 
@@ -63,7 +63,17 @@ if uploaded_file is None:
 
 elif uploaded_file:
     read_and_textify(uploaded_file)
+    
 
+    directory = '/'
+
+    def load_docs(directory):
+      loader = DirectoryLoader(directory)
+      documents = loader.load()
+      return documents
+
+    documents = load_docs(directory)
+    len(documents)
 
     # Apply the custom function and convert date columns
     for col in df.columns:
