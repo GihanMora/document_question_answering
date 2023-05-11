@@ -21,27 +21,28 @@ if 'generated' not in st.session_state:
 if 'past' not in st.session_state:
     st.session_state['past'] = []
 
-pdfFileObj = open('/content/drive/MyDrive/ChatGPT/Resources/Data/LTU/24-Feb-2023-La-Trobe-University-UNGC-CoE-Report-FINAL.pdf', 'rb')
-pdfReader = PyPDF2.PdfReader (pdfFileObj)
+def read_and_textify(file):
+#     pdfFileObj = open('/content/drive/MyDrive/ChatGPT/Resources/Data/LTU/24-Feb-2023-La-Trobe-University-UNGC-CoE-Report-FINAL.pdf', 'rb')
+    pdfReader = PyPDF2.PdfReader (file)
 
-print("Page Number:", len(pdfReader.pages))
-for i in range(len(pdfReader.pages)):
+    print("Page Number:", len(pdfReader.pages))
+    for i in range(len(pdfReader.pages)):
 
-  pageObj = pdfReader.pages[i]
+      pageObj = pdfReader.pages[i]
 
-  text = pageObj.extract_text()
-  pageObj.clear()
-  print(text)
+      text = pageObj.extract_text()
+      pageObj.clear()
+      print(text)
 
-  # save to a text file for later use
-  # copy the path where the script and pdf is placed
-  file1=open(r"/content/drive/MyDrive/ChatGPT/Resources/Data/LTU/texts//"+str(i)+"_convertedtext.txt","w")
-  file1.writelines(text)
+      # save to a text file for later use
+      # copy the path where the script and pdf is placed
+      file1=open(r"/content/drive/MyDrive/ChatGPT/Resources/Data/LTU/texts//"+str(i)+"_convertedtext.txt","w")
+      file1.writelines(text)
 
-  
 
-  # closing the text file object
-  file1.close()
+
+      # closing the text file object
+      file1.close()
 
 
 # closing the pdf file object
@@ -57,11 +58,11 @@ st.write("---")
 uploaded_file = st.file_uploader("Upload a documents", type=["txt","pdf"])
 st.write("---")
 if uploaded_file is None:
-    st.info(f"""Upload a .csv file to analyse""")
+    st.info(f"""Upload a .pdf file to analyse""")
 
 
 elif uploaded_file:
-    df = pd.read_csv(uploaded_file)
+    read_and_textify(uploaded_file)
 
 
     # Apply the custom function and convert date columns
