@@ -1,0 +1,6 @@
+streamlit
+pandas
+openai
+plotly
+numpy
+streamlit_chat
