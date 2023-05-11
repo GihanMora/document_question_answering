@@ -10,4 +10,4 @@ langchain
 poppler-utils
 pillow
 pytesseract
-tesseract-ocr
+
