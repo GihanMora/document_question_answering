@@ -12,7 +12,7 @@ import traceback
 from langchain.document_loaders import DirectoryLoader
 import PyPDF2
 from streamlit_chat import message
-
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 # Storing the chat
 if 'generated' not in st.session_state:
@@ -51,7 +51,13 @@ def read_and_textify(file):
     st.write(text_list)
     return text_list
 
+def split_docs(documents,chunk_size=3000,chunk_overlap=100):
+  text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+  docs = text_splitter.split_documents(documents)
+  return docs
 
+docs = split_docs(documents)
+print(len(docs))
 
 # wide layout
 st.set_page_config(layout="centered", page_title="Cooee + ChatGPT")
@@ -65,18 +71,11 @@ if uploaded_file is None:
 
 
 elif uploaded_file:
-    read_and_textify(uploaded_file)
+    texts = read_and_textify(uploaded_file)
+    docs = split_docs(documents)
+    st.write(len(docs))
+
     
-
-    directory = '/'
-
-    def load_docs(directory):
-      loader = DirectoryLoader(directory)
-      documents = loader.load()
-      return documents
-
-    documents = load_docs(directory)
-    len(documents)
 
     # Apply the custom function and convert date columns
     for col in df.columns:
