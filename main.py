@@ -13,6 +13,11 @@ from langchain.document_loaders import DirectoryLoader
 import PyPDF2
 from streamlit_chat import message
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings.openai import OpenAIEmbeddings
+import pinecone 
+from langchain.vectorstores import Pinecone
+from langchain.chains.question_answering import load_qa_chain
+
 
 # Storing the chat
 if 'generated' not in st.session_state:
@@ -57,6 +62,24 @@ def split_docs(documents,chunk_size=3000,chunk_overlap=100):
   docs = text_splitter.create_documents(documents)
   return docs
 
+def get_similiar_docs(query,k=2,score=False):
+  if score:
+    similar_docs = index.similarity_search_with_score(query,k=k)
+  else:
+    similar_docs = index.similarity_search(query,k=k)
+  return similar_docs
+
+
+def get_answer(query):
+  similar_docs = get_similiar_docs(query)
+  
+  answer =  chain.run(input_documents=similar_docs, question=query)
+  print('Answer >>>>>>>>>>')
+  print(answer)
+  print("Relevant Documents >>>>>>>>>>")
+  for d in similar_docs:
+    print(d.metadata)
+  # return  answer
 
 
 # wide layout
@@ -71,9 +94,31 @@ if uploaded_file is None:
 
 
 elif uploaded_file:
+    #get text from documents
     documents = read_and_textify(uploaded_file)
+    #text chunking
     docs = split_docs(documents)
     st.write(len(docs))
+    
+    #extract embeddings
+    embeddings = OpenAIEmbeddings(openai_api_key=os.environ['OPENAI_API_KEY'])
+    
+    
+    pinecone.init(
+    api_key="e32d4136-e020-4410-bfef-62031f37461d",  # find at app.pinecone.io
+    environment="us-west1-gcp-free"  # next to api key in console
+    )
+
+    index_name = "document-qa"
+
+    index = Pinecone.from_documents(docs, embeddings, index_name=index_name)
+    
+    # model_name = "text-davinci-003"
+    model_name = "gpt-3.5-turbo"
+    # model_name = "gpt-4"
+    llm = OpenAI(model_name=model_name)
+    
+    chain = load_qa_chain(llm, chain_type="stuff")
 
     
 
