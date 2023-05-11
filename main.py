@@ -45,8 +45,8 @@ def read_and_textify(file):
       file1.close()
 
 
-# closing the pdf file object
-file.close()
+    # closing the pdf file object
+    file.close()
 
 
 
