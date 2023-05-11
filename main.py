@@ -38,7 +38,7 @@ def read_and_textify(file):
       # copy the path where the script and pdf is placed
 #       file1=open(r""+str(i)+"_convertedtext.txt","wb")
 #       file1.writelines(text)
-       text_list.append(text)
+      text_list.append(text)
 
 
 
