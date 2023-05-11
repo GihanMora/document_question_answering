@@ -24,7 +24,7 @@ if 'past' not in st.session_state:
 def read_and_textify(file):
 #     pdfFileObj = open('/content/drive/MyDrive/ChatGPT/Resources/Data/LTU/24-Feb-2023-La-Trobe-University-UNGC-CoE-Report-FINAL.pdf', 'rb')
     pdfReader = PyPDF2.PdfReader (file)
-
+    text_list = []
     print("Page Number:", len(pdfReader.pages))
     for i in range(len(pdfReader.pages)):
 
@@ -36,17 +36,19 @@ def read_and_textify(file):
 
       # save to a text file for later use
       # copy the path where the script and pdf is placed
-      file1=open(r""+str(i)+"_convertedtext.txt","wb")
-      file1.writelines(text)
+#       file1=open(r""+str(i)+"_convertedtext.txt","wb")
+#       file1.writelines(text)
+       text_list.append(text)
 
 
 
       # closing the text file object
-      file1.close()
+#       file1.close()
 
 
     # closing the pdf file object
     file.close()
+    st.write(text_list)
 
 
 
