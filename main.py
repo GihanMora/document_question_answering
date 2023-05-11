@@ -56,8 +56,7 @@ def split_docs(documents,chunk_size=3000,chunk_overlap=100):
   docs = text_splitter.split_documents(documents)
   return docs
 
-docs = split_docs(documents)
-print(len(docs))
+
 
 # wide layout
 st.set_page_config(layout="centered", page_title="Cooee + ChatGPT")
