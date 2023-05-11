@@ -36,7 +36,7 @@ def read_and_textify(file):
 
       # save to a text file for later use
       # copy the path where the script and pdf is placed
-      file1=open(r"/content/drive/MyDrive/ChatGPT/Resources/Data/LTU/texts//"+str(i)+"_convertedtext.txt","w")
+      file1=open(r"str(i)+"_convertedtext.txt","w")
       file1.writelines(text)
 
 
