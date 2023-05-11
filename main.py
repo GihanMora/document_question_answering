@@ -9,6 +9,8 @@ import numpy as np
 import re
 from dateutil.parser import parse
 import traceback
+
+import PyPDF2
 from streamlit_chat import message
 
 
@@ -19,68 +21,31 @@ if 'generated' not in st.session_state:
 if 'past' not in st.session_state:
     st.session_state['past'] = []
 
-def create_connection(db_name: str) -> Connection:
-    conn = sqlite3.connect(db_name)
-    return conn
+pdfFileObj = open('/content/drive/MyDrive/ChatGPT/Resources/Data/LTU/24-Feb-2023-La-Trobe-University-UNGC-CoE-Report-FINAL.pdf', 'rb')
+pdfReader = PyPDF2.PdfReader (pdfFileObj)
 
-def run_query(conn: Connection, query: str) -> pd.DataFrame:
-    df = pd.read_sql_query(query, conn)
-    return df
+print("Page Number:", len(pdfReader.pages))
+for i in range(len(pdfReader.pages)):
 
-def create_table(conn: Connection, df: pd.DataFrame, table_name: str):
-    df.to_sql(table_name, conn, if_exists="replace", index=False)
+  pageObj = pdfReader.pages[i]
 
+  text = pageObj.extract_text()
+  pageObj.clear()
+  print(text)
 
-def generate_gpt_reponse(gpt_input, max_tokens):
+  # save to a text file for later use
+  # copy the path where the script and pdf is placed
+  file1=open(r"/content/drive/MyDrive/ChatGPT/Resources/Data/LTU/texts//"+str(i)+"_convertedtext.txt","w")
+  file1.writelines(text)
 
-    # load api key from secrets
-    openai.api_key = st.secrets["openai_api_key"]
+  
 
-    completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        max_tokens=max_tokens,
-        temperature=0,
-        messages=[
-            {"role": "user", "content": gpt_input},
-        ]
-    )
-
-    gpt_response = completion.choices[0].message['content'].strip()
-    return gpt_response
+  # closing the text file object
+  file1.close()
 
 
-def extract_code(gpt_response):
-    """function to extract code and sql query from gpt response"""
-
-    if "```" in gpt_response:
-        # extract text between ``` and ```
-        pattern = r'```(.*?)```'
-        code = re.search(pattern, gpt_response, re.DOTALL)
-        extracted_code = code.group(1)
-
-        # remove python from the code (weird bug)
-        extracted_code = extracted_code.replace('python', '')
-
-        return extracted_code
-    else:
-        return gpt_response
-
-# We will get the user's input by calling the get_text function
-def get_text():
-    input_text = st.text_input("You: ","Hello, how are you?", key="input")
-    return input_text
-
-def generate_response(prompt):
-    completions = openai.Completion.create(
-        engine = "text-davinci-003",
-        prompt = prompt,
-        max_tokens = 1024,
-        n = 1,
-        stop = None,
-        temperature=0.5,
-    )
-    message = completions.choices[0].text
-    return message 
+# closing the pdf file object
+pdfFileObj.close()
 
 
 
