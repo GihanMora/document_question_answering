@@ -116,7 +116,7 @@ elif uploaded_file:
     # model_name = "text-davinci-003"
     model_name = "gpt-3.5-turbo"
     # model_name = "gpt-4"
-    llm = OpenAI(model_name=model_name)
+    llm = OpenAI(model_name=model_name, openai_api_key = st.secrets["openai_api_key"])
     
     chain = load_qa_chain(llm, chain_type="stuff")
 
