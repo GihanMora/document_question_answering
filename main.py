@@ -71,7 +71,7 @@ if uploaded_file is None:
 
 
 elif uploaded_file:
-    texts = read_and_textify(uploaded_file)
+    documents = read_and_textify(uploaded_file)
     docs = split_docs(documents)
     st.write(len(docs))
 
