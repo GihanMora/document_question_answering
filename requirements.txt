@@ -8,6 +8,6 @@ PyPDF2
 tiktoken
 langchain
 poppler-utils
-pillow==6.2.2
+pillow
 pytesseract
 tesseract-ocr
