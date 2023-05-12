@@ -19,7 +19,7 @@ from langchain.vectorstores import Pinecone
 from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
 from langchain.vectorstores import Chroma
-
+from langchain import OpenAI, VectorDBQA
 
 # Storing the chat
 if 'generated' not in st.session_state:
