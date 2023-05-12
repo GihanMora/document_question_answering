@@ -126,103 +126,14 @@ elif uploaded_file:
             try:
                 # create gpt prompt
                 st.write("asasasasasa")
-                gpt_input = 'Write a sql lite query based on this question: {} The table name is my_table and the table has the following columns: {}. ' \
-                            'Return only a sql query and nothing else'.format(user_q, cols)
-
+                result = get_answer(query)
+                st.subheader('Your response: {}'.format(result))
                 
-                query = generate_gpt_reponse(gpt_input, max_tokens=200)
-
-                
-                
-                query_clean = extract_code(query)
-                result = run_query(conn, query_clean)
-
-                with col1.expander("SQL query used for the question"):
-                    col1.code(query_clean)
-
-                # if result df has one row and one column
-                if result.shape == (1, 1):
-
-                    # get the value of the first row of the first column
-                    val = result.iloc[0, 0]
-
-                    # write one liner response
-                    col1.subheader('Your response: {}'.format(val))
-
-                else:
-                    col1.subheader("Your result:")
-                    col1.table(result)
 
             except Exception as e:
                 st.error(f"An error occurred: {e}")
-                col1.error('Oops, the GPT response resulted in an error :( Please try again with a different question.')
+                st.error('Oops, the GPT response resulted in an error :( Please try again with a different question.')
     
     
-    
-    
-    
-    col2.header("Visualization")
-    user_input = col2.text_area("Add features that the plot would have.")
-
-    if col2.button("Create a visualization"):
-        try:
-            # create gpt prompt
-            gpt_input = 'Write code in Python using Plotly to address the following request: {} ' \
-                        'Use df that has the following columns: {}. Do not use animation_group argument and return only code with no import statements and the data has been already loaded in a df variable'.format(user_input, cols)
-
-            with st.spinner('ChatGPT is working...'):
-                gpt_response = generate_gpt_reponse(gpt_input, max_tokens=1500)
-
-                extracted_code = extract_code(gpt_response)
-
-                extracted_code = extracted_code.replace('fig.show()', 'col2.plotly_chart(fig)')
-
-                with col2.expander("Plotly code used for the visualization"):
-                    col2.code(extracted_code)
-
-                # execute code
-                exec(extracted_code)
-
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
-            #st.write(traceback.print_exc())
-            col2.error('Oops, the GPT response resulted in an error :( Please try again with a different question.')
-            
-            
-    st.header("Conversational AI")
-
-
-    #Creating the chatbot interface
-
-
-    # Storing the chat
-    if 'generated' not in st.session_state:
-        st.session_state['generated'] = []
-
-    if 'past' not in st.session_state:
-        df_str = df.to_string()
-        st.session_state['past'] = [df_str]
-
-    # We will get the user's input by calling the get_text function
-    def get_text():
-        input_text = st.text_input("Type your message here: ","",key="input")
-        return input_text
-    
-#     # convert the dataframe into a string
-#     df_str = df.to_string()
-    
-#     st.session_state.past.append(df_str)
-    user_input = get_text()
-
-    if user_input:
-        output = generate_gpt_reponse(user_input, 1024)
-        # store the output 
-        st.session_state.past.append(user_input)
-        st.session_state.generated.append(output)
-
-    if st.session_state['generated']:
-
-        for i in range(len(st.session_state['generated'])-1, -1, -1):
-#             message(st.session_state['past'])
-            message(st.session_state["generated"][i], key=str(i))
-            message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
+   
+ 
