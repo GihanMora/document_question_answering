@@ -104,22 +104,23 @@ elif uploaded_file:
     #extract embeddings
     embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
     
+    vStore = Chroma.from_documents(docs, embeddings)
     
-    pinecone.init(
-    api_key="e32d4136-e020-4410-bfef-62031f37461d",  # find at app.pinecone.io
-    environment="us-west1-gcp-free"  # next to api key in console
-    )
+#     pinecone.init(
+#     api_key="e32d4136-e020-4410-bfef-62031f37461d",  # find at app.pinecone.io
+#     environment="us-west1-gcp-free"  # next to api key in console
+#     )
 
-    index_name = "document-qa"
+#     index_name = "document-qa"
 
-    index = Pinecone.from_documents(docs, embeddings, index_name=index_name)
+#     index = Pinecone.from_documents(docs, embeddings, index_name=index_name)
     
     # model_name = "text-davinci-003"
     model_name = "gpt-3.5-turbo"
     # model_name = "gpt-4"
     llm = OpenAI(model_name=model_name, openai_api_key = st.secrets["openai_api_key"])
-    
-    chain = load_qa_chain(llm, chain_type="stuff")
+    model = VectorDBQA.from_chain_type(llm=llm, chain_type="stuff", vectorstore=vStore)
+#     chain = load_qa_chain(llm, chain_type="stuff")
 
     st.header("Ask your data")
     user_q = st.text_area("Enter your question here")
@@ -127,7 +128,7 @@ elif uploaded_file:
             try:
                 # create gpt prompt
                 
-                result = get_answer(user_q)
+                result = model.run(question)
                 st.subheader('Your response: {}'.format(result))
                 
 
