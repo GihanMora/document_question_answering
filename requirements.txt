@@ -1,14 +1,2 @@
 streamlit
-pandas
-openai
-plotly
-numpy
-streamlit_chat
-PyPDF2
-tiktoken
 langchain
-poppler-utils
-pillow
-pytesseract
-pinecone-client
-chromadb
