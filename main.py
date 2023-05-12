@@ -84,9 +84,9 @@ def get_answer(query):
 
 
 # wide layout
-st.set_page_config(layout="centered", page_title="Cooee + ChatGPT")
+st.set_page_config(layout="centered", page_title="Cooee - Document QA")
 
-st.header("Document Question Answering")
+st.header("Cooee - Document Question Answering")
 st.write("---")
 uploaded_file = st.file_uploader("Upload a documents", type=["txt","pdf"])
 st.write("---")
@@ -99,7 +99,7 @@ elif uploaded_file:
     documents = read_and_textify(uploaded_file)
     #text chunking
     docs = split_docs(documents)
-    st.write(str(len(docs)) + " documents are loaded..")
+    st.write(str(len(docs)) + " document(s) loaded..")
     
     #extract embeddings
     embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
