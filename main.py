@@ -130,7 +130,7 @@ elif uploaded_file:
             try:
                 # create gpt prompt
                 
-                result = model.run(question)
+                result = model.run(user_q)
                 st.subheader('Your response: {}'.format(result))
                 
 
