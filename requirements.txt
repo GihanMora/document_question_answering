@@ -11,3 +11,4 @@ poppler-utils
 pillow
 pytesseract
 pinecone-client
+chromadb
