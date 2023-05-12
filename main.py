@@ -120,41 +120,12 @@ elif uploaded_file:
     
     chain = load_qa_chain(llm, chain_type="stuff")
 
-    
-
-    # Apply the custom function and convert date columns
-    for col in df.columns:
-        # check if a column name contains date substring
-        if 'date' in col.lower():
-            df[col] = pd.to_datetime(df[col])
-            # remove timestamp
-            #df[col] = df[col].dt.date
-
-    # reset index
-    df = df.reset_index(drop=True)
-
-    # replace space with _ in column names
-    df.columns = df.columns.str.replace(' ', '_')
-
-    cols = df.columns
-    cols = ", ".join(cols)
-
-    with st.expander("Preview of the uploaded CSV file"):
-        st.table(df.head())
-
-    conn = create_connection(":memory:")
-    table_name = "my_table"
-    create_table(conn, df, table_name)
-    st.write("---")
-
-
-                
-    col1, col2 = st.columns(2)
-    col1.header("Question Answering")
-    user_q = col1.text_area("Enter your question here")
-    if col1.button("Get Response"):
+    st.header("Ask your data")
+    user_q = st.text_area("Enter your question here")
+    if st.button("Get Response"):
             try:
                 # create gpt prompt
+                st.write("asasasasasa")
                 gpt_input = 'Write a sql lite query based on this question: {} The table name is my_table and the table has the following columns: {}. ' \
                             'Return only a sql query and nothing else'.format(user_q, cols)
 
