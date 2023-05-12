@@ -4,6 +4,8 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain import OpenAI, VectorDBQA
+import PyPDF2
+
 
 #This function will go through pdf and extract and return list of page texts.
 def read_and_textify(file):
