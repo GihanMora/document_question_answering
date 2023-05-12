@@ -125,8 +125,8 @@ elif uploaded_file:
     if st.button("Get Response"):
             try:
                 # create gpt prompt
-                st.write("asasasasasa")
-                result = get_answer(query)
+                
+                result = get_answer(user_q)
                 st.subheader('Your response: {}'.format(result))
                 
 
