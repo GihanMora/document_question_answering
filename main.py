@@ -30,14 +30,14 @@ def read_and_textify(file):
 #     pdfFileObj = open('/content/drive/MyDrive/ChatGPT/Resources/Data/LTU/24-Feb-2023-La-Trobe-University-UNGC-CoE-Report-FINAL.pdf', 'rb')
     pdfReader = PyPDF2.PdfReader (file)
     text_list = []
-    print("Page Number:", len(pdfReader.pages))
+#     print("Page Number:", len(pdfReader.pages))
     for i in range(len(pdfReader.pages)):
 
       pageObj = pdfReader.pages[i]
 
       text = pageObj.extract_text()
       pageObj.clear()
-      print(text)
+#       print(text)
 
       # save to a text file for later use
       # copy the path where the script and pdf is placed
@@ -53,7 +53,7 @@ def read_and_textify(file):
 
     # closing the pdf file object
     file.close()
-    st.write(text_list)
+#     st.write(text_list)
     return text_list
 
 def split_docs(documents,chunk_size=3000,chunk_overlap=100):
@@ -76,6 +76,7 @@ def get_answer(query):
   answer =  chain.run(input_documents=similar_docs, question=query)
   print('Answer >>>>>>>>>>')
   print(answer)
+  st.write(answer)
   print("Relevant Documents >>>>>>>>>>")
   for d in similar_docs:
     print(d.metadata)
@@ -98,7 +99,7 @@ elif uploaded_file:
     documents = read_and_textify(uploaded_file)
     #text chunking
     docs = split_docs(documents)
-    st.write(len(docs))
+    st.write(str(len(docs)) + " documents are loaded..")
     
     #extract embeddings
     embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
