@@ -65,7 +65,7 @@ elif uploaded_file:
             try:
                 # create gpt prompt
                 result = model.run(user_q)
-                st.subheader('Your response: {}'.format(result))
+                st.subheader('Your response: {}'.format(' '))
             except Exception as e:
                 st.error(f"An error occurred: {e}")
                 st.error('Oops, the GPT response resulted in an error :( Please try again with a different question.')
