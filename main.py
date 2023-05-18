@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_chat import message
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
