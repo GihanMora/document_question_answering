@@ -43,9 +43,8 @@ elif uploaded_file:
     documents = read_and_textify(uploaded_file)
     #text chunking
 #     docs = split_docs(documents)
-    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-    docs = text_splitter.split_text(documents)
-    st.write(str(len(docs)) + " document(s) loaded..")
+    
+    st.write(str(len(documents)) + " document(s) loaded..")
     
     #extract embeddings
     embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
