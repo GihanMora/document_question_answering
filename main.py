@@ -48,7 +48,7 @@ elif uploaded_file:
     #extract embeddings
     embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
     
-    vStore = Chroma.from_documents(docs, embeddings, metadatas=[{"source": f"{i}-pl"} for i in range(len(docs))])
+    vStore = Chroma.from_texts(docs, embeddings, metadatas=[{"source": f"{i}-pl"} for i in range(len(docs))])
     
     #deciding model
     model_name = "gpt-3.5-turbo"
