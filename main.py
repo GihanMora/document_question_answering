@@ -20,12 +20,6 @@ def read_and_textify(file):
     file.close()
     return text_list
 
-#LangChain document splitter
-# def split_docs(documents,chunk_size=3000,chunk_overlap=100):
-#   text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-#   docs = text_splitter.create_documents(documents)
-#   return docs
-
 # centered page layout
 st.set_page_config(layout="centered", page_title="Cooee - Document QA")
 st.header("Cooee - Document Question Answering")
@@ -41,15 +35,14 @@ if uploaded_file is None:
 elif uploaded_file:
     #get text from documents
     documents = read_and_textify(uploaded_file)
-    #text chunking
-#     docs = split_docs(documents)
+    #manual chunking based on pages.
     docs = documents
     st.write(str(len(documents)) + " document(s) loaded..")
     
     #extract embeddings
     embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
-    
-    vStore = Chroma.from_texts(docs, embeddings, metadatas=[{"source": f"{i}-pl"} for i in range(len(docs))])
+    #vstore with metadata. Here we will store page numbers.
+    vStore = Chroma.from_texts(docs, embeddings, metadatas=[{"source": f"page-{i}"} for i in range(len(docs))])
     st.write(vStore)
     #deciding model
     model_name = "gpt-3.5-turbo"
@@ -57,10 +50,8 @@ elif uploaded_file:
     
     #initiate model
     llm = OpenAI(model_name=model_name, openai_api_key = st.secrets["openai_api_key"])
-#     model = VectorDBQA.from_chain_type(llm=llm, chain_type="stuff", vectorstore=vStore)
     model = RetrievalQAWithSourcesChain.from_chain_type(llm=llm, chain_type="stuff", retriever=vStore.as_retriever())
     
-
 
     st.header("Ask your data")
     user_q = st.text_area("Enter your question here")
@@ -72,6 +63,8 @@ elif uploaded_file:
                 st.write(result)
                 st.subheader('Your response: {}'.format(' '))
                 st.write(result['answer'])
+                st.subheader('Source pages: {}'.format(' '))
+                st.write(result['sources'])
             except Exception as e:
                 st.error(f"An error occurred: {e}")
                 st.error('Oops, the GPT response resulted in an error :( Please try again with a different question.')
