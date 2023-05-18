@@ -66,9 +66,10 @@ elif uploaded_file:
     if st.button("Get Response"):
             try:
                 # create gpt prompt
-                result = model.run(user_q)
+#                 result = model.run(user_q)
+                result = model(user_q)
                 st.subheader('Your response: {}'.format(' '))
-                st.write(result)
+                st.write(result['answer'])
             except Exception as e:
                 st.error(f"An error occurred: {e}")
                 st.error('Oops, the GPT response resulted in an error :( Please try again with a different question.')
