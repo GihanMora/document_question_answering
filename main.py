@@ -68,7 +68,7 @@ elif uploaded_file:
                 # create gpt prompt
 #                 result = model.run(user_q)
                 result = model(user_q)
-                print(result)
+                st.write(result)
                 st.subheader('Your response: {}'.format(' '))
                 st.write(result['answer'])
             except Exception as e:
