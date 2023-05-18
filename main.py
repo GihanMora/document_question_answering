@@ -3,6 +3,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain import OpenAI, VectorDBQA
+from langchain.chains import RetrievalQAWithSourcesChain
 import PyPDF2
 
 
@@ -47,7 +48,7 @@ elif uploaded_file:
     #extract embeddings
     embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
     
-    vStore = Chroma.from_documents(docs, embeddings)
+    vStore = Chroma.from_documents(docs, embeddings, metadatas=[{"source": f"{i}-pl"} for i in range(len(docs))])
     
     #deciding model
     model_name = "gpt-3.5-turbo"
@@ -55,7 +56,9 @@ elif uploaded_file:
     
     #initiate model
     llm = OpenAI(model_name=model_name, openai_api_key = st.secrets["openai_api_key"])
-    model = VectorDBQA.from_chain_type(llm=llm, chain_type="stuff", vectorstore=vStore)
+#     model = VectorDBQA.from_chain_type(llm=llm, chain_type="stuff", vectorstore=vStore)
+    model = RetrievalQAWithSourcesChain.from_chain_type(llm=llm, chain_type="stuff", vectorstore=vStore)
+    
 
 
     st.header("Ask your data")
