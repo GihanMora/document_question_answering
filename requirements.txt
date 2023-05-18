@@ -3,3 +3,4 @@ langchain
 PyPDF2
 openai
 chromadb
+tiktoken
