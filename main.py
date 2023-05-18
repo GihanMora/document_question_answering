@@ -43,7 +43,7 @@ elif uploaded_file:
     documents = read_and_textify(uploaded_file)
     #text chunking
 #     docs = split_docs(documents)
-    
+    docs = documents
     st.write(str(len(documents)) + " document(s) loaded..")
     
     #extract embeddings
