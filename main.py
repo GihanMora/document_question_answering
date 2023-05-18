@@ -67,7 +67,7 @@ elif uploaded_file:
             try:
                 # create gpt prompt
 #                 result = model.run(user_q)
-                result = model(user_q)
+                result = model({"question": user_q}, return_only_outputs=True)
                 st.write(result)
                 st.subheader('Your response: {}'.format(' '))
                 st.write(result['answer'])
