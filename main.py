@@ -57,7 +57,7 @@ elif uploaded_file:
     #initiate model
     llm = OpenAI(model_name=model_name, openai_api_key = st.secrets["openai_api_key"])
 #     model = VectorDBQA.from_chain_type(llm=llm, chain_type="stuff", vectorstore=vStore)
-    model = RetrievalQAWithSourcesChain.from_chain_type(llm=llm, chain_type="stuff", vectorstore=vStore)
+    model = RetrievalQAWithSourcesChain.from_chain_type(llm=llm, chain_type="stuff", retriever=vStore.as_retriever())
     
 
 
