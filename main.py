@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter,CharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain import OpenAI, VectorDBQA
@@ -21,10 +21,10 @@ def read_and_textify(file):
     return text_list
 
 #LangChain document splitter
-def split_docs(documents,chunk_size=3000,chunk_overlap=100):
-  text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-  docs = text_splitter.create_documents(documents)
-  return docs
+# def split_docs(documents,chunk_size=3000,chunk_overlap=100):
+#   text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+#   docs = text_splitter.create_documents(documents)
+#   return docs
 
 # centered page layout
 st.set_page_config(layout="centered", page_title="Cooee - Document QA")
@@ -42,13 +42,15 @@ elif uploaded_file:
     #get text from documents
     documents = read_and_textify(uploaded_file)
     #text chunking
-    docs = split_docs(documents)
+#     docs = split_docs(documents)
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    docs = text_splitter.split_text(state_of_the_union)
     st.write(str(len(docs)) + " document(s) loaded..")
     
     #extract embeddings
     embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
     
-    vStore = Chroma.from_documents(docs, embeddings, metadatas=[{"source": f"{i}-pl"} for i in range(len(docs))])
+    vStore = Chroma.from_texts(docs, embeddings, metadatas=[{"source": f"{i}-pl"} for i in range(len(docs))])
     st.write(vStore)
     #deciding model
     model_name = "gpt-3.5-turbo"
