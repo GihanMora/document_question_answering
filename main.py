@@ -48,7 +48,7 @@ elif uploaded_file:
     # model_name = "gpt-4"
     
     #initiate model
-    llm = OpenAI(model_name=model_name, openai_api_key = st.secrets["openai_api_key"])
+    llm = OpenAI(model_name=model_name, openai_api_key = st.secrets["openai_api_key"], streaming=True)
     model = RetrievalQAWithSourcesChain.from_chain_type(llm=llm, chain_type="stuff", retriever=vStore.as_retriever())
     
 
