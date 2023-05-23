@@ -28,7 +28,7 @@ st.write("---")
 #file uploader
 uploaded_files = st.file_uploader("Upload documents",accept_multiple_files=True, type=["txt","pdf"])
 st.write("---")
-if uploaded_file is None:
+if uploaded_files  is None:
     st.info(f"""Upload files to analyse""")
 
 #Use vectorDB to QnA
