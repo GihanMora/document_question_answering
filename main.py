@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain.text_splitter import RecursiveCharacterTextSplitter,CharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain import OpenAI, VectorDBQA
