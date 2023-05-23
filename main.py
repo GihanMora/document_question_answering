@@ -26,18 +26,19 @@ st.header("Cooee - Document Question Answering")
 st.write("---")
 
 #file uploader
-uploaded_file = st.file_uploader("Upload documents",accept_multiple_files=True, type=["txt","pdf"])
+uploaded_files = st.file_uploader("Upload documents",accept_multiple_files=True, type=["txt","pdf"])
 st.write("---")
 if uploaded_file is None:
     st.info(f"""Upload files to analyse""")
 
 #Use vectorDB to QnA
-elif uploaded_file:
+elif uploaded_files:
+    st.write(str(len(uploaded_files)) + " document(s) loaded..")
     #get text from documents
-    documents = read_and_textify(uploaded_file)
+    documents = read_and_textify(uploaded_files)
     #manual chunking based on pages.
     docs = documents
-    st.write(str(len(documents)) + " document(s) loaded..")
+    
     
     #extract embeddings
     embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
