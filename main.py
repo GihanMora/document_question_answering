@@ -26,10 +26,10 @@ st.header("Cooee - Document Question Answering")
 st.write("---")
 
 #file uploader
-uploaded_file = st.file_uploader("Upload a documents",accept_multiple_files=True, type=["txt","pdf"])
+uploaded_file = st.file_uploader("Upload documents",accept_multiple_files=True, type=["txt","pdf"])
 st.write("---")
 if uploaded_file is None:
-    st.info(f"""Upload a .pdf file to analyse""")
+    st.info(f"""Upload files to analyse""")
 
 #Use vectorDB to QnA
 elif uploaded_file:
