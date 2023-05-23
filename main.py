@@ -8,16 +8,16 @@ import PyPDF2
 
 
 #This function will go through pdf and extract and return list of page texts.
-def read_and_textify(file):
-    pdfReader = PyPDF2.PdfReader (file)
+def read_and_textify(files):
     text_list = []
-    #print("Page Number:", len(pdfReader.pages))
-    for i in range(len(pdfReader.pages)):
-      pageObj = pdfReader.pages[i]
-      text = pageObj.extract_text()
-      pageObj.clear()
-      text_list.append(text)
-    file.close()
+    for file in files:
+        pdfReader = PyPDF2.PdfReader(file)
+        #print("Page Number:", len(pdfReader.pages))
+        for i in range(len(pdfReader.pages)):
+          pageObj = pdfReader.pages[i]
+          text = pageObj.extract_text()
+          pageObj.clear()
+          text_list.append(text)
     return text_list
 
 # centered page layout
