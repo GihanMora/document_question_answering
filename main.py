@@ -10,6 +10,7 @@ import PyPDF2
 #This function will go through pdf and extract and return list of page texts.
 def read_and_textify(files):
     text_list = []
+    sources_list = []
     for file in files:
         pdfReader = PyPDF2.PdfReader(file)
         #print("Page Number:", len(pdfReader.pages))
@@ -18,7 +19,8 @@ def read_and_textify(files):
           text = pageObj.extract_text()
           pageObj.clear()
           text_list.append(text)
-    return text_list
+          sources_list.append(file.name + "_page_"+str(i))
+    return [text_list,sources_list]
 
 # centered page layout
 st.set_page_config(layout="centered", page_title="Cooee - Document QA")
