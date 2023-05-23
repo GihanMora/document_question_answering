@@ -37,7 +37,9 @@ if uploaded_files  is None:
 elif uploaded_files:
     st.write(str(len(uploaded_files)) + " document(s) loaded..")
     #get text from documents
-    documents = read_and_textify(uploaded_files)
+    textify_output = read_and_textify(uploaded_files)
+    documents = textify_output[0]
+    sources = textify_output[1]
     #manual chunking based on pages.
     docs = documents
     
@@ -45,7 +47,7 @@ elif uploaded_files:
     #extract embeddings
     embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
     #vstore with metadata. Here we will store page numbers.
-    vStore = Chroma.from_texts(docs, embeddings, metadatas=[{"source": f"page-{i}"} for i in range(len(docs))])
+    vStore = Chroma.from_texts(docs, embeddings, metadatas=[{"source": s} for s in sources])
     #deciding model
     model_name = "gpt-3.5-turbo"
     # model_name = "gpt-4"
