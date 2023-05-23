@@ -52,9 +52,12 @@ elif uploaded_files:
     model_name = "gpt-3.5-turbo"
     # model_name = "gpt-4"
     
+    retriever = vStore.as_retriever()
+    retriever.search_kwargs = {'k':2}
+    
     #initiate model
     llm = OpenAI(model_name=model_name, openai_api_key = st.secrets["openai_api_key"], streaming=True)
-    model = RetrievalQAWithSourcesChain.from_chain_type(llm=llm, chain_type="stuff", retriever=vStore.as_retriever())
+    model = RetrievalQAWithSourcesChain.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
     
 
     st.header("Ask your data")
